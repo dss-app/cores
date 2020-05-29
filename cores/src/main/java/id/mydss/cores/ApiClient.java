@@ -125,7 +125,7 @@ public class ApiClient {
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
                         .build();
-                Log.wtf("SSL","sssslll");
+                Log.wtf("SSL","SSL Q");
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
@@ -152,6 +152,7 @@ public class ApiClient {
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
                         .build();
+                Log.wtf("SSL","SSL Marsh -- > Pie");
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
@@ -170,6 +171,7 @@ public class ApiClient {
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
                         .build();
+                Log.wtf("SSL","SSL <---Loli");
             } catch (GeneralSecurityException e) {
                 throw new RuntimeException(e);
             }
