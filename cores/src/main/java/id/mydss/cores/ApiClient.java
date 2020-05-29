@@ -72,8 +72,8 @@ public class ApiClient {
             public Response intercept(Interceptor.Chain chain) throws IOException {
                 Request original = chain.request();
                 Request.Builder requestBuilder = original.newBuilder();
-                        // .header("Authorization", "Bearer " + sKey)
-                       // .header("Content-Type", "application/json; charset=utf-8");
+                // .header("Authorization", "Bearer " + sKey)
+                // .header("Content-Type", "application/json; charset=utf-8");
                 //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
                 //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
                 Request request = requestBuilder.build();
@@ -97,34 +97,24 @@ public class ApiClient {
                 return response;
             }
         });
-/*
-        OkHttpClient client = null;
-        try {
-            client = httpClient.sslSocketFactory(getSSLConfig(context).getSocketFactory()).build();
-        } catch (CertificateException e) {
-        } catch (IOException e) {
-        } catch (KeyStoreException e) {
-        } catch (NoSuchAlgorithmException e) {
-        } catch (KeyManagementException e) {
-        }*/
+
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         //  OkHttpClient client = httpClient.addInterceptor(interceptor).build();
         OkHttpClient client = null;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            client = httpClient.addNetworkInterceptor(interceptor).build();
-        }else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP &&  Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
             try {
                 trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
                 SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, new TrustManager[] { trustManager }, null);
+                sslContext.init(null, new TrustManager[]{trustManager}, null);
                 sslSocketFactory = sslContext.getSocketFactory();
                 httpClient.sslSocketFactory(sslSocketFactory, trustManager);
                 httpClient.hostnameVerifier(new HostnameVerifier() {
-                    @Override public boolean verify(String hostname, SSLSession session) {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
                         // HostnameVerifier hv = OkHostnameVerifier.INSTANCE;
                         // Log.e("HTTPS_OKHTTP", "" + hv.verify("sample.com", session));
                         return true;
@@ -138,16 +128,42 @@ public class ApiClient {
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
-           // client = httpClient.sslSocketFactory(getSSLConfig(context).getSocketFactory()).build();
 
-        }else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP){
+        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+            X509TrustManager trustManager;
+            SSLSocketFactory sslSocketFactory;
+            try {
+                trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
+                SSLContext sslContext = SSLContext.getInstance("TLS");
+                sslContext.init(null, new TrustManager[]{trustManager}, null);
+                sslSocketFactory = sslContext.getSocketFactory();
+                httpClient.sslSocketFactory(sslSocketFactory, trustManager);
+                httpClient.hostnameVerifier(new HostnameVerifier() {
+                    @Override
+                    public boolean verify(String hostname, SSLSession session) {
+                        // HostnameVerifier hv = OkHostnameVerifier.INSTANCE;
+                        // Log.e("HTTPS_OKHTTP", "" + hv.verify("sample.com", session));
+                        return true;
+                    }
+                });
+
+                client = httpClient
+                        .addNetworkInterceptor(interceptor)
+                        .sslSocketFactory(sslSocketFactory, trustManager)
+                        .build();
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            }
+            // client = httpClient.sslSocketFactory(getSSLConfig(context).getSocketFactory()).build();
+
+        } else if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
 
             X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
             try {
                 trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
                 SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, new TrustManager[] { trustManager }, null);
+                sslContext.init(null, new TrustManager[]{trustManager}, null);
                 sslSocketFactory = sslContext.getSocketFactory();
             } catch (GeneralSecurityException e) {
                 throw new RuntimeException(e);
@@ -209,7 +225,7 @@ public class ApiClient {
         // sufficient to connect to most HTTPS sites including https://godaddy.com and https://visa.com.
         // Typically developers will need to get a PEM file from their organization's TLS administrator.
 
-        String entrustRootCertificateAuthority = ""+
+        String entrustRootCertificateAuthority = "" +
                 "-----BEGIN CERTIFICATE-----\n" +
                 "MIIFsTCCBJmgAwIBAgIQAyOnDWIibB9Hsi3TaiQpmzANBgkqhkiG9w0BAQsFADBe\n" +
                 "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
