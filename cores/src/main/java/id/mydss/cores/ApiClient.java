@@ -37,6 +37,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.internal.tls.OkHostnameVerifier;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.Buffer;
 import retrofit2.Retrofit;
@@ -111,16 +112,16 @@ public class ApiClient {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, new TrustManager[]{trustManager}, null);
                 sslSocketFactory = sslContext.getSocketFactory();
-  /*              httpClient.sslSocketFactory(sslSocketFactory, trustManager);
+                httpClient.sslSocketFactory(sslSocketFactory, trustManager);
                 httpClient.hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
-                        // HostnameVerifier hv = OkHostnameVerifier.INSTANCE;
-                        // Log.e("HTTPS_OKHTTP", "" + hv.verify("sample.com", session));
+                         HostnameVerifier hv = OkHostnameVerifier.INSTANCE;
+                         Log.e("HTTPS_OKHTTP", "" + hv.verify("dev-api.dismart.id", session));
                         return true;
                     }
                 });
-*/
+
                 client = httpClient
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
