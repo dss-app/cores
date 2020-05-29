@@ -111,7 +111,7 @@ public class ApiClient {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, new TrustManager[]{trustManager}, null);
                 sslSocketFactory = sslContext.getSocketFactory();
-                httpClient.sslSocketFactory(sslSocketFactory, trustManager);
+  /*              httpClient.sslSocketFactory(sslSocketFactory, trustManager);
                 httpClient.hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
@@ -120,16 +120,17 @@ public class ApiClient {
                         return true;
                     }
                 });
-
+*/
                 client = httpClient
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
                         .build();
+                Log.wtf("SSL","sssslll");
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
 
-        } else if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+        } else if ( (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)) {
             X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
             try {
@@ -137,7 +138,7 @@ public class ApiClient {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, new TrustManager[]{trustManager}, null);
                 sslSocketFactory = sslContext.getSocketFactory();
-                httpClient.sslSocketFactory(sslSocketFactory, trustManager);
+                /*httpClient.sslSocketFactory(sslSocketFactory, trustManager);
                 httpClient.hostnameVerifier(new HostnameVerifier() {
                     @Override
                     public boolean verify(String hostname, SSLSession session) {
@@ -145,7 +146,7 @@ public class ApiClient {
                         // Log.e("HTTPS_OKHTTP", "" + hv.verify("sample.com", session));
                         return true;
                     }
-                });
+                });*/
 
                 client = httpClient
                         .addNetworkInterceptor(interceptor)
@@ -165,6 +166,10 @@ public class ApiClient {
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, new TrustManager[]{trustManager}, null);
                 sslSocketFactory = sslContext.getSocketFactory();
+                client = httpClient
+                        .addNetworkInterceptor(interceptor)
+                        .sslSocketFactory(sslSocketFactory, trustManager)
+                        .build();
             } catch (GeneralSecurityException e) {
                 throw new RuntimeException(e);
             }
@@ -273,7 +278,7 @@ public class ApiClient {
      * set. This is useful in development where certificate authority-trusted certificates aren't
      * available. Or in production, to avoid reliance on third-party certificate authorities.
      *
-     * <p>See also {@link CertificatePinner}, which can limit trusted certificates while still using
+
      * the host platform's built-in trust store.
      *
      * <h3>Warning: Customizing Trusted Certificates is Dangerous!</h3>
