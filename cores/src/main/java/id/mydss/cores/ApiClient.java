@@ -112,11 +112,9 @@ public class ApiClient {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         //  OkHttpClient client = httpClient.addInterceptor(interceptor).build();
         OkHttpClient client = null;
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.Q){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
             client = httpClient.addNetworkInterceptor(interceptor).build();
         }else if(Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP &&  Build.VERSION.SDK_INT <= Build.VERSION_CODES.P){
-
-
             X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
             try {
@@ -140,8 +138,6 @@ public class ApiClient {
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
-
-
            // client = httpClient.sslSocketFactory(getSSLConfig(context).getSocketFactory()).build();
 
         }else if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP){
@@ -213,34 +209,41 @@ public class ApiClient {
         // sufficient to connect to most HTTPS sites including https://godaddy.com and https://visa.com.
         // Typically developers will need to get a PEM file from their organization's TLS administrator.
 
-        String entrustRootCertificateAuthority = ""
-                + "-----BEGIN CERTIFICATE-----\n"
-                + "MIIEkTCCA3mgAwIBAgIERWtQVDANBgkqhkiG9w0BAQUFADCBsDELMAkGA1UEBhMC\n"
-                + "VVMxFjAUBgNVBAoTDUVudHJ1c3QsIEluYy4xOTA3BgNVBAsTMHd3dy5lbnRydXN0\n"
-                + "Lm5ldC9DUFMgaXMgaW5jb3Jwb3JhdGVkIGJ5IHJlZmVyZW5jZTEfMB0GA1UECxMW\n"
-                + "KGMpIDIwMDYgRW50cnVzdCwgSW5jLjEtMCsGA1UEAxMkRW50cnVzdCBSb290IENl\n"
-                + "cnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTA2MTEyNzIwMjM0MloXDTI2MTEyNzIw\n"
-                + "NTM0MlowgbAxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1FbnRydXN0LCBJbmMuMTkw\n"
-                + "NwYDVQQLEzB3d3cuZW50cnVzdC5uZXQvQ1BTIGlzIGluY29ycG9yYXRlZCBieSBy\n"
-                + "ZWZlcmVuY2UxHzAdBgNVBAsTFihjKSAyMDA2IEVudHJ1c3QsIEluYy4xLTArBgNV\n"
-                + "BAMTJEVudHJ1c3QgUm9vdCBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTCCASIwDQYJ\n"
-                + "KoZIhvcNAQEBBQADggEPADCCAQoCggEBALaVtkNC+sZtKm9I35RMOVcF7sN5EUFo\n"
-                + "Nu3s/poBj6E4KPz3EEZmLk0eGrEaTsbRwJWIsMn/MYszA9u3g3s+IIRe7bJWKKf4\n"
-                + "4LlAcTfFy0cOlypowCKVYhXbR9n10Cv/gkvJrT7eTNuQgFA/CYqEAOwwCj0Yzfv9\n"
-                + "KlmaI5UXLEWeH25DeW0MXJj+SKfFI0dcXv1u5x609mhF0YaDW6KKjbHjKYD+JXGI\n"
-                + "rb68j6xSlkuqUY3kEzEZ6E5Nn9uss2rVvDlUccp6en+Q3X0dgNmBu1kmwhH+5pPi\n"
-                + "94DkZfs0Nw4pgHBNrziGLp5/V6+eF67rHMsoIV+2HNjnogQi+dPa2MsCAwEAAaOB\n"
-                + "sDCBrTAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUwAwEB/zArBgNVHRAEJDAi\n"
-                + "gA8yMDA2MTEyNzIwMjM0MlqBDzIwMjYxMTI3MjA1MzQyWjAfBgNVHSMEGDAWgBRo\n"
-                + "kORnpKZTgMeGZqTx90tD+4S9bTAdBgNVHQ4EFgQUaJDkZ6SmU4DHhmak8fdLQ/uE\n"
-                + "vW0wHQYJKoZIhvZ9B0EABBAwDhsIVjcuMTo0LjADAgSQMA0GCSqGSIb3DQEBBQUA\n"
-                + "A4IBAQCT1DCw1wMgKtD5Y+iRDAUgqV8ZyntyTtSx29CW+1RaGSwMCPeyvIWonX9t\n"
-                + "O1KzKtvn1ISMY/YPyyYBkVBs9F8U4pN0wBOeMDpQ47RgxRzwIkSNcUesyBrJ6Zua\n"
-                + "AGAT/3B+XxFNSRuzFVJ7yVTav52Vr2ua2J7p8eRDjeIRRDq/r72DQnNSi6q7pynP\n"
-                + "9WQcCk3RvKqsnyrQ/39/2n3qse0wJcGE2jTSW3iDVuycNsMm4hH2Z0kdkquM++v/\n"
-                + "eu6FSqdQgPCnXEqULl8FmTxSQeDNtGPPAUO6nIPcj2A781q0tHuu2guQOHXvgR1m\n"
-                + "0vdXcDazv/wor3ElhVsT/h5/WrQ8\n"
-                + "-----END CERTIFICATE-----\n";
+        String entrustRootCertificateAuthority = ""+
+                "-----BEGIN CERTIFICATE-----\n" +
+                "MIIFsTCCBJmgAwIBAgIQAyOnDWIibB9Hsi3TaiQpmzANBgkqhkiG9w0BAQsFADBe\n" +
+                "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
+                "d3cuZGlnaWNlcnQuY29tMR0wGwYDVQQDExRSYXBpZFNTTCBSU0EgQ0EgMjAxODAe\n" +
+                "Fw0yMDAxMDQwMDAwMDBaFw0yMTAxMDMxMjAwMDBaMBcxFTATBgNVBAMMDCouZGlz\n" +
+                "bWFydC5pZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALIm6jny4ocn\n" +
+                "bIQZhypwNAb95wqXqKtAceBnm+db/42N4Nvr+yy/SoFUJsO6GlrTCW3JdgBfuDER\n" +
+                "NZ6iRO0+TOBLvP8nm3b8Gw0Mj95sDr9JRwAB7fvAyoJAerIf4shrXtVX2ZhvAu7p\n" +
+                "dexBYe508JudLgX2wL6cGHocKzbE7eznU8fdz5SwKPS9yngp5Me+sE+HipnKnH+b\n" +
+                "KJD/B5/GlRiuFql45ELhDntD/tzKGaGI/weaxqusIUZVMzaRXXEWK3nwxsvPnZIq\n" +
+                "bjmBsNOjjj25GrwnK+Hpm4MGbqE3iCszdBsYNh43+ASVvi7dwxyISWSAuHEBFWIE\n" +
+                "VOhd2na9oN0CAwEAAaOCArAwggKsMB8GA1UdIwQYMBaAFFPKF1n8a8ADIS8aruSq\n" +
+                "qByCVtp1MB0GA1UdDgQWBBQCy90LBUUawYhU6Z2Pmb3vaCKNZTAjBgNVHREEHDAa\n" +
+                "ggwqLmRpc21hcnQuaWSCCmRpc21hcnQuaWQwDgYDVR0PAQH/BAQDAgWgMB0GA1Ud\n" +
+                "JQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjA+BgNVHR8ENzA1MDOgMaAvhi1odHRw\n" +
+                "Oi8vY2RwLnJhcGlkc3NsLmNvbS9SYXBpZFNTTFJTQUNBMjAxOC5jcmwwTAYDVR0g\n" +
+                "BEUwQzA3BglghkgBhv1sAQIwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGln\n" +
+                "aWNlcnQuY29tL0NQUzAIBgZngQwBAgEwdQYIKwYBBQUHAQEEaTBnMCYGCCsGAQUF\n" +
+                "BzABhhpodHRwOi8vc3RhdHVzLnJhcGlkc3NsLmNvbTA9BggrBgEFBQcwAoYxaHR0\n" +
+                "cDovL2NhY2VydHMucmFwaWRzc2wuY29tL1JhcGlkU1NMUlNBQ0EyMDE4LmNydDAJ\n" +
+                "BgNVHRMEAjAAMIIBBAYKKwYBBAHWeQIEAgSB9QSB8gDwAHcApLkJkLQYWBSHuxOi\n" +
+                "zGdwCjw1mAT5G9+443fNDsgN3BAAAAFvcN5VagAABAMASDBGAiEAsOV+8B/1UNpv\n" +
+                "IJk5OdY0KUskLF/Xr3NzklcsfiehBUMCIQD1zaqXNV8HQbkJoyrQ9XdERjWJGnq8\n" +
+                "Id0WeVbnO3qmdQB1AESUZS6w7s6vxEAH2Kj+KMDa5oK+2MsxtT/TM5a1toGoAAAB\n" +
+                "b3DeVSIAAAQDAEYwRAIgRM5UbpBNKDUkma9qnSjRq2jNXY9lq2zvS4QPkPTz6SIC\n" +
+                "ICiFao3KLPaP4SSZfaz+CSJ0RCY9lA4hSZEmYJCgARWNMA0GCSqGSIb3DQEBCwUA\n" +
+                "A4IBAQAH4kOGB39lHgAinhCNQXsRBMwUhaXB/CL+BKqceuo4kVZVKOOee9imKdIs\n" +
+                "hBTWuI9gohnAUi+B+bNGCkUcmC7Sym5yTsaU74mwBl1juysxJesDVVYMBeEHsk5N\n" +
+                "LvaiBWoI6NOjsFaJoEDcOVxZBF3UCwDhEcGrP2nNpSvaaB+XSrs2bbHb0b+07TzT\n" +
+                "HpoiCa26aSh41K+3gsmcPZVKcXeE3GOGBlMZ43rn8TOddr6a9hNooYsnyz+1Fh0M\n" +
+                "462PoIOtu4EZ0AwIlQAevN4aafgcEbm06kVmQ+y+bahMgEjrLBXQ21M3B6/hKvW3\n" +
+                "yLckNY5q52z+Gc3tQSX4/YVL7XX5\n" +
+                "-----END CERTIFICATE-----";
+
 
         return new Buffer().writeUtf8(entrustRootCertificateAuthority).inputStream();
     }
