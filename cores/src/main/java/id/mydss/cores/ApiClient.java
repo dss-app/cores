@@ -151,14 +151,12 @@ public class ApiClient {
                     "yLckNY5q52z+Gc3tQSX4/YVL7XX5\n" +
                     "-----END CERTIFICATE-----");
             HandshakeCertificates certificates = new HandshakeCertificates.Builder()
-                    .addTrustedCertificate(dismartRsaCertificationAuthority)
-                    .addTrustedCertificate(digicertRsaCertificationAuthority)
                     .addTrustedCertificate(rapidRsaCertificationAuthority)
+                    .addTrustedCertificate(digicertRsaCertificationAuthority)
+                    .addTrustedCertificate(dismartRsaCertificationAuthority)
                     // Uncomment if standard certificates are also required.
                     //.addPlatformTrustedCertificates()
                     .build();
-
-
             httpClient.readTimeout(2, TimeUnit.SECONDS);
             httpClient.connectTimeout(2, TimeUnit.SECONDS);
 
