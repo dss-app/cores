@@ -178,7 +178,7 @@ public class ApiClient {
                     .build();
 */
             //  httpClient.addInterceptor(interceptor);
-            httpClient
+            client =  httpClient
                     .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
                     .addInterceptor(new Interceptor() {
                         @Override
@@ -212,8 +212,6 @@ public class ApiClient {
                     })
                     .addNetworkInterceptor(interceptor)
                     .build();
-            ;
-
             Log.wtf("SSL", "SSL Q");
 
             /*X509TrustManager trustManager;
