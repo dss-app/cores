@@ -49,6 +49,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static Retrofit retrofit = null;
+
     public static Retrofit getRetrofitInstance(final String sKey, Context context) {
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -158,8 +159,8 @@ public class ApiClient {
                     .build();
 
 
-            httpClient.readTimeout(3, TimeUnit.SECONDS);
-            httpClient.connectTimeout(3, TimeUnit.SECONDS);
+            httpClient.readTimeout(2, TimeUnit.SECONDS);
+            httpClient.connectTimeout(2, TimeUnit.SECONDS);
 
             SSLContext sslContext = null;
             try {
@@ -168,13 +169,14 @@ public class ApiClient {
                 e.printStackTrace();
             }
 
-            if(sslContext!=null){
+            if (sslContext != null) {
                 httpClient.sslSocketFactory(sslContext.getSocketFactory(), systemDefaultTrustManager());
             }
+            //  client =  httpClient.sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager()).build();
 
-            client =  httpClient
-                    //.sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
-                    .sslSocketFactory(sslContext.getSocketFactory(), systemDefaultTrustManager())
+            httpClient
+                    .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
+                    // .sslSocketFactory(sslContext.getSocketFactory(), systemDefaultTrustManager())
                     .addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Interceptor.Chain chain) throws IOException {
@@ -190,14 +192,25 @@ public class ApiClient {
                             return response;
                         }
                     })
-                    .addNetworkInterceptor(interceptor)
-                    .build();
+                    .addNetworkInterceptor(interceptor);
 
-            Log.wtf("SSL", "SSL Q");
+            httpClient.hostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    HostnameVerifier hv = OkHostnameVerifier.INSTANCE;
+                    Log.e("HTTPS_OKHTTP", "" + hv.verify("dev-api.dismart.id", session));
+                    return true;
+                }
+            });
+
+            client = httpClient.build();
+
+            Log.wtf("SSL", "QQQ");
         }
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
+                    // .baseUrl("https://dev-api.dismart.id")
                     .baseUrl("https://dev-api.dismart.id")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create(gson))
@@ -206,12 +219,12 @@ public class ApiClient {
         return retrofit;
 
     }
+
     //Clear Retrofit
     public static Retrofit clearRetrofitInstance() {
         retrofit = null;
         return retrofit;
     }
-
 
 
     private static SSLContext createCertificate(InputStream trustedCertificateIS) throws CertificateException, IOException, KeyStoreException, KeyManagementException, NoSuchAlgorithmException, java.security.cert.CertificateException {
