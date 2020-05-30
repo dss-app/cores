@@ -20,6 +20,7 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -39,6 +40,8 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.internal.tls.OkHostnameVerifier;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.tls.Certificates;
+import okhttp3.tls.HandshakeCertificates;
 import okio.Buffer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -104,8 +107,57 @@ public class ApiClient {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         //  OkHttpClient client = httpClient.addInterceptor(interceptor).build();
         OkHttpClient client = null;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            X509TrustManager trustManager;
+            X509Certificate dismartRsaCertificationAuthority = Certificates.decodeCertificatePem(""+
+                    "-----BEGIN CERTIFICATE-----\n" +
+                    "MIIFsTCCBJmgAwIBAgIQAyOnDWIibB9Hsi3TaiQpmzANBgkqhkiG9w0BAQsFADBe\n" +
+                    "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
+                    "d3cuZGlnaWNlcnQuY29tMR0wGwYDVQQDExRSYXBpZFNTTCBSU0EgQ0EgMjAxODAe\n" +
+                    "Fw0yMDAxMDQwMDAwMDBaFw0yMTAxMDMxMjAwMDBaMBcxFTATBgNVBAMMDCouZGlz\n" +
+                    "bWFydC5pZDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALIm6jny4ocn\n" +
+                    "bIQZhypwNAb95wqXqKtAceBnm+db/42N4Nvr+yy/SoFUJsO6GlrTCW3JdgBfuDER\n" +
+                    "NZ6iRO0+TOBLvP8nm3b8Gw0Mj95sDr9JRwAB7fvAyoJAerIf4shrXtVX2ZhvAu7p\n" +
+                    "dexBYe508JudLgX2wL6cGHocKzbE7eznU8fdz5SwKPS9yngp5Me+sE+HipnKnH+b\n" +
+                    "KJD/B5/GlRiuFql45ELhDntD/tzKGaGI/weaxqusIUZVMzaRXXEWK3nwxsvPnZIq\n" +
+                    "bjmBsNOjjj25GrwnK+Hpm4MGbqE3iCszdBsYNh43+ASVvi7dwxyISWSAuHEBFWIE\n" +
+                    "VOhd2na9oN0CAwEAAaOCArAwggKsMB8GA1UdIwQYMBaAFFPKF1n8a8ADIS8aruSq\n" +
+                    "qByCVtp1MB0GA1UdDgQWBBQCy90LBUUawYhU6Z2Pmb3vaCKNZTAjBgNVHREEHDAa\n" +
+                    "ggwqLmRpc21hcnQuaWSCCmRpc21hcnQuaWQwDgYDVR0PAQH/BAQDAgWgMB0GA1Ud\n" +
+                    "JQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjA+BgNVHR8ENzA1MDOgMaAvhi1odHRw\n" +
+                    "Oi8vY2RwLnJhcGlkc3NsLmNvbS9SYXBpZFNTTFJTQUNBMjAxOC5jcmwwTAYDVR0g\n" +
+                    "BEUwQzA3BglghkgBhv1sAQIwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGln\n" +
+                    "aWNlcnQuY29tL0NQUzAIBgZngQwBAgEwdQYIKwYBBQUHAQEEaTBnMCYGCCsGAQUF\n" +
+                    "BzABhhpodHRwOi8vc3RhdHVzLnJhcGlkc3NsLmNvbTA9BggrBgEFBQcwAoYxaHR0\n" +
+                    "cDovL2NhY2VydHMucmFwaWRzc2wuY29tL1JhcGlkU1NMUlNBQ0EyMDE4LmNydDAJ\n" +
+                    "BgNVHRMEAjAAMIIBBAYKKwYBBAHWeQIEAgSB9QSB8gDwAHcApLkJkLQYWBSHuxOi\n" +
+                    "zGdwCjw1mAT5G9+443fNDsgN3BAAAAFvcN5VagAABAMASDBGAiEAsOV+8B/1UNpv\n" +
+                    "IJk5OdY0KUskLF/Xr3NzklcsfiehBUMCIQD1zaqXNV8HQbkJoyrQ9XdERjWJGnq8\n" +
+                    "Id0WeVbnO3qmdQB1AESUZS6w7s6vxEAH2Kj+KMDa5oK+2MsxtT/TM5a1toGoAAAB\n" +
+                    "b3DeVSIAAAQDAEYwRAIgRM5UbpBNKDUkma9qnSjRq2jNXY9lq2zvS4QPkPTz6SIC\n" +
+                    "ICiFao3KLPaP4SSZfaz+CSJ0RCY9lA4hSZEmYJCgARWNMA0GCSqGSIb3DQEBCwUA\n" +
+                    "A4IBAQAH4kOGB39lHgAinhCNQXsRBMwUhaXB/CL+BKqceuo4kVZVKOOee9imKdIs\n" +
+                    "hBTWuI9gohnAUi+B+bNGCkUcmC7Sym5yTsaU74mwBl1juysxJesDVVYMBeEHsk5N\n" +
+                    "LvaiBWoI6NOjsFaJoEDcOVxZBF3UCwDhEcGrP2nNpSvaaB+XSrs2bbHb0b+07TzT\n" +
+                    "HpoiCa26aSh41K+3gsmcPZVKcXeE3GOGBlMZ43rn8TOddr6a9hNooYsnyz+1Fh0M\n" +
+                    "462PoIOtu4EZ0AwIlQAevN4aafgcEbm06kVmQ+y+bahMgEjrLBXQ21M3B6/hKvW3\n" +
+                    "yLckNY5q52z+Gc3tQSX4/YVL7XX5\n" +
+                    "-----END CERTIFICATE-----");
+
+            HandshakeCertificates certificates = new HandshakeCertificates.Builder()
+                  //  .addTrustedCertificate(letsEncryptCertificateAuthority)
+                  //  .addTrustedCertificate(entrustRootCertificateAuthority)
+                    .addTrustedCertificate(dismartRsaCertificationAuthority)
+                    // Uncomment if standard certificates are also required.
+                    //.addPlatformTrustedCertificates()
+                    .build();
+            client = httpClient
+                    .addNetworkInterceptor(interceptor)
+                    .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
+                    .build();
+            Log.wtf("SSL","SSL Q");
+
+            /*X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
             try {
                 trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
@@ -129,7 +181,7 @@ public class ApiClient {
                 Log.wtf("SSL","SSL Q");
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
-            }
+            }*/
 
         } else if ( (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)) {
             X509TrustManager trustManager;
