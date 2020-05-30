@@ -177,7 +177,6 @@ public class ApiClient {
 
             httpClient
                     .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
-                    // .sslSocketFactory(sslContext.getSocketFactory(), systemDefaultTrustManager())
                     .addInterceptor(new Interceptor() {
                         @Override
                         public Response intercept(Interceptor.Chain chain) throws IOException {
