@@ -23,6 +23,7 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.KeyManagerFactory;
@@ -178,6 +179,8 @@ public class ApiClient {
                     .build();
 */
             //  httpClient.addInterceptor(interceptor);
+            httpClient.readTimeout(60, TimeUnit.SECONDS);
+            httpClient.connectTimeout(60, TimeUnit.SECONDS);
             client =  httpClient
                     .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
                     .addInterceptor(new Interceptor() {
