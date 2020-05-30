@@ -163,7 +163,7 @@ public class ApiClient {
 
             SSLContext sslContext = null;
             try {
-                sslContext = createCertificate(context.getResources().openRawResource(R.raw.dismart_id));
+                sslContext = createCertificate(context.getResources().openRawResource(R.raw.dismart_all));
             } catch (CertificateException | IOException | KeyStoreException | KeyManagementException | NoSuchAlgorithmException | java.security.cert.CertificateException e) {
                 e.printStackTrace();
             }
