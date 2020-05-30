@@ -70,38 +70,6 @@ public class ApiClient {
 
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        //  httpClient.addInterceptor(interceptor);
-        httpClient.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Interceptor.Chain chain) throws IOException {
-                Request original = chain.request();
-                Request.Builder requestBuilder = original.newBuilder();
-                // .header("Authorization", "Bearer " + sKey)
-                // .header("Content-Type", "application/json; charset=utf-8");
-                //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-                //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-                Request request = requestBuilder.build();
-                Response response = chain.proceed(request);
-                Log.wtf("RESPON_TIME", "" + (response.receivedResponseAtMillis() - response.sentRequestAtMillis()) + " ms");
-
-                /* ADD INTERCEPTOR */
-/*
-                // if(response.code() >= 400 && response.code() < 500){
-                //SEND BROADCAST TO SERVICE
-                Intent checkBroadCastState = new Intent();
-                checkBroadCastState.setAction("id.dismart.app.HEADER_RESPONSE");
-                checkBroadCastState.putExtra("code", response.code());
-                checkBroadCastState.putExtra("url", "" + original.url());
-                checkBroadCastState.putExtra("rsp_tm", "" + (response.receivedResponseAtMillis() - response.sentRequestAtMillis()) + " ms");
-
-
-                context.sendBroadcast(checkBroadCastState);
-*/
-                // }
-                return response;
-            }
-        });
-
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -204,10 +172,46 @@ public class ApiClient {
                     // Uncomment if standard certificates are also required.
                     //.addPlatformTrustedCertificates()
                     .build();
-            client = httpClient
-                    .addNetworkInterceptor(interceptor)
+/*      client = httpClient
+                    //.addNetworkInterceptor(interceptor)
                     .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
                     .build();
+*/
+            //  httpClient.addInterceptor(interceptor);
+            httpClient
+                    .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
+                    .addInterceptor(new Interceptor() {
+                        @Override
+                        public Response intercept(Interceptor.Chain chain) throws IOException {
+                            Request original = chain.request();
+                            Request.Builder requestBuilder = original.newBuilder();
+                            // .header("Authorization", "Bearer " + sKey)
+                            // .header("Content-Type", "application/json; charset=utf-8");
+                            //HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+                            //interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                            Request request = requestBuilder.build();
+                            Response response = chain.proceed(request);
+                            Log.wtf("RESPON_TIME", "" + (response.receivedResponseAtMillis() - response.sentRequestAtMillis()) + " ms");
+
+                            /* ADD INTERCEPTOR */
+/*
+                // if(response.code() >= 400 && response.code() < 500){
+                //SEND BROADCAST TO SERVICE
+                Intent checkBroadCastState = new Intent();
+                checkBroadCastState.setAction("id.dismart.app.HEADER_RESPONSE");
+                checkBroadCastState.putExtra("code", response.code());
+                checkBroadCastState.putExtra("url", "" + original.url());
+                checkBroadCastState.putExtra("rsp_tm", "" + (response.receivedResponseAtMillis() - response.sentRequestAtMillis()) + " ms");
+
+
+                context.sendBroadcast(checkBroadCastState);
+*/
+                            // }
+                            return response;
+                        }
+                    }).build();
+            ;
+
             Log.wtf("SSL", "SSL Q");
 
             /*X509TrustManager trustManager;
