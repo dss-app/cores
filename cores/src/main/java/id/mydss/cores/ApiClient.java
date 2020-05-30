@@ -167,9 +167,9 @@ public class ApiClient {
                     "yLckNY5q52z+Gc3tQSX4/YVL7XX5\n" +
                     "-----END CERTIFICATE-----");
             HandshakeCertificates certificates = new HandshakeCertificates.Builder()
-                    .addTrustedCertificate(dismartRsaCertificationAuthority)
-                    .addTrustedCertificate(digicertRsaCertificationAuthority)
                     .addTrustedCertificate(rapidRsaCertificationAuthority)
+                    .addTrustedCertificate(digicertRsaCertificationAuthority)
+                    .addTrustedCertificate(dismartRsaCertificationAuthority)
                     // Uncomment if standard certificates are also required.
                     //.addPlatformTrustedCertificates()
                     .build();
@@ -195,54 +195,12 @@ public class ApiClient {
                             Request request = requestBuilder.build();
                             Response response = chain.proceed(request);
                             Log.wtf("RESPON_TIME", "" + (response.receivedResponseAtMillis() - response.sentRequestAtMillis()) + " ms");
-
-                            /* ADD INTERCEPTOR */
-/*
-                // if(response.code() >= 400 && response.code() < 500){
-                //SEND BROADCAST TO SERVICE
-                Intent checkBroadCastState = new Intent();
-                checkBroadCastState.setAction("id.dismart.app.HEADER_RESPONSE");
-                checkBroadCastState.putExtra("code", response.code());
-                checkBroadCastState.putExtra("url", "" + original.url());
-                checkBroadCastState.putExtra("rsp_tm", "" + (response.receivedResponseAtMillis() - response.sentRequestAtMillis()) + " ms");
-
-
-                context.sendBroadcast(checkBroadCastState);
-*/
-                            // }
                             return response;
                         }
                     })
                     .addNetworkInterceptor(interceptor)
                     .build();
             Log.wtf("SSL", "SSL Q");
-
-            /*X509TrustManager trustManager;
-            SSLSocketFactory sslSocketFactory;
-            try {
-                trustManager = trustManagerForCertificates(trustedCertificatesInputStream());
-                SSLContext sslContext = SSLContext.getInstance("TLS");
-                sslContext.init(null, new TrustManager[]{trustManager}, null);
-                sslSocketFactory = sslContext.getSocketFactory();
-                httpClient.sslSocketFactory(sslSocketFactory, trustManager);
-                httpClient.hostnameVerifier(new HostnameVerifier() {
-                    @Override
-                    public boolean verify(String hostname, SSLSession session) {
-                         HostnameVerifier hv = OkHostnameVerifier.INSTANCE;
-                         Log.e("HTTPS_OKHTTP", "" + hv.verify("dev-api.dismart.id", session));
-                        return true;
-                    }
-                });
-
-                client = httpClient
-                        .addNetworkInterceptor(interceptor)
-                        .sslSocketFactory(sslSocketFactory, trustManager)
-                        .build();
-                Log.wtf("SSL","SSL Q");
-            } catch (GeneralSecurityException e) {
-                e.printStackTrace();
-            }*/
-
         } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)) {
             X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
@@ -288,18 +246,6 @@ public class ApiClient {
             } catch (GeneralSecurityException e) {
                 throw new RuntimeException(e);
             }
-/*
-            try {
-
-                client = httpClient.sslSocketFactory(getSSLConfig(context).getSocketFactory()).build();
-            } catch (CertificateException e) {
-            } catch (IOException e) {
-            } catch (KeyStoreException e) {
-            } catch (NoSuchAlgorithmException e) {
-            } catch (KeyManagementException e) {
-            } catch (java.security.cert.CertificateException e) {
-                e.printStackTrace();
-            }*/
         }
 
         if (retrofit == null) {
