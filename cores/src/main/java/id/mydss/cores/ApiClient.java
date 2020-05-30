@@ -162,7 +162,7 @@ public class ApiClient {
             httpClient.readTimeout(2, TimeUnit.SECONDS);
             httpClient.connectTimeout(2, TimeUnit.SECONDS);
 
-            SSLContext sslContext = null;
+          /*  SSLContext sslContext = null;
             try {
                 sslContext = createCertificate(context.getResources().openRawResource(R.raw.dismart_all));
             } catch (CertificateException | IOException | KeyStoreException | KeyManagementException | NoSuchAlgorithmException | java.security.cert.CertificateException e) {
@@ -172,6 +172,7 @@ public class ApiClient {
             if (sslContext != null) {
                 httpClient.sslSocketFactory(sslContext.getSocketFactory(), systemDefaultTrustManager());
             }
+            */
             //  client =  httpClient.sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager()).build();
 
             httpClient
@@ -226,9 +227,8 @@ public class ApiClient {
         return retrofit;
     }
 
-
+/*
     private static SSLContext createCertificate(InputStream trustedCertificateIS) throws CertificateException, IOException, KeyStoreException, KeyManagementException, NoSuchAlgorithmException, java.security.cert.CertificateException {
-
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         Certificate ca;
         try {
@@ -270,5 +270,5 @@ public class ApiClient {
         }
 
     }
-
+*/
 }
