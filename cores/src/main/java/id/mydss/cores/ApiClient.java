@@ -109,7 +109,61 @@ public class ApiClient {
         OkHttpClient client = null;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            X509Certificate dismartRsaCertificationAuthority = Certificates.decodeCertificatePem(""+
+            X509Certificate rapidRsaCertificationAuthority = Certificates.decodeCertificatePem("" +
+                    "-----BEGIN CERTIFICATE-----\n" +
+                    "MIIEsTCCA5mgAwIBAgIQCKWiRs1LXIyD1wK0u6tTSTANBgkqhkiG9w0BAQsFADBh\n" +
+                    "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
+                    "d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\n" +
+                    "QTAeFw0xNzExMDYxMjIzMzNaFw0yNzExMDYxMjIzMzNaMF4xCzAJBgNVBAYTAlVT\n" +
+                    "MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\n" +
+                    "b20xHTAbBgNVBAMTFFJhcGlkU1NMIFJTQSBDQSAyMDE4MIIBIjANBgkqhkiG9w0B\n" +
+                    "AQEFAAOCAQ8AMIIBCgKCAQEA5S2oihEo9nnpezoziDtx4WWLLCll/e0t1EYemE5n\n" +
+                    "+MgP5viaHLy+VpHP+ndX5D18INIuuAV8wFq26KF5U0WNIZiQp6mLtIWjUeWDPA28\n" +
+                    "OeyhTlj9TLk2beytbtFU6ypbpWUltmvY5V8ngspC7nFRNCjpfnDED2kRyJzO8yoK\n" +
+                    "MFz4J4JE8N7NA1uJwUEFMUvHLs0scLoPZkKcewIRm1RV2AxmFQxJkdf7YN9Pckki\n" +
+                    "f2Xgm3b48BZn0zf0qXsSeGu84ua9gwzjzI7tbTBjayTpT+/XpWuBVv6fvarI6bik\n" +
+                    "KB859OSGQuw73XXgeuFwEPHTIRoUtkzu3/EQ+LtwznkkdQIDAQABo4IBZjCCAWIw\n" +
+                    "HQYDVR0OBBYEFFPKF1n8a8ADIS8aruSqqByCVtp1MB8GA1UdIwQYMBaAFAPeUDVW\n" +
+                    "0Uy7ZvCj4hsbw5eyPdFVMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEF\n" +
+                    "BQcDAQYIKwYBBQUHAwIwEgYDVR0TAQH/BAgwBgEB/wIBADA0BggrBgEFBQcBAQQo\n" +
+                    "MCYwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBCBgNVHR8E\n" +
+                    "OzA5MDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRHbG9i\n" +
+                    "YWxSb290Q0EuY3JsMGMGA1UdIARcMFowNwYJYIZIAYb9bAECMCowKAYIKwYBBQUH\n" +
+                    "AgEWHGh0dHBzOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwCwYJYIZIAYb9bAEBMAgG\n" +
+                    "BmeBDAECATAIBgZngQwBAgIwDQYJKoZIhvcNAQELBQADggEBAH4jx/LKNW5ZklFc\n" +
+                    "YWs8Ejbm0nyzKeZC2KOVYR7P8gevKyslWm4Xo4BSzKr235FsJ4aFt6yAiv1eY0tZ\n" +
+                    "/ZN18bOGSGStoEc/JE4ocIzr8P5Mg11kRYHbmgYnr1Rxeki5mSeb39DGxTpJD4kG\n" +
+                    "hs5lXNoo4conUiiJwKaqH7vh2baryd8pMISag83JUqyVGc2tWPpO0329/CWq2kry\n" +
+                    "qv66OSMjwulUz0dXf4OHQasR7CNfIr+4KScc6ABlQ5RDF86PGeE6kdwSQkFiB/cQ\n" +
+                    "ysNyq0jEDQTkfa2pjmuWtMCNbBnhFXBYejfubIhaUbEv2FOQB3dCav+FPg5eEveX\n" +
+                    "TVyMnGo=\n" +
+                    "-----END CERTIFICATE-----");
+
+            X509Certificate digicertRsaCertificationAuthority = Certificates.decodeCertificatePem("" +
+                    "-----BEGIN CERTIFICATE-----\n" +
+                    "MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBh\n" +
+                    "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
+                    "d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD\n" +
+                    "QTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVT\n" +
+                    "MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j\n" +
+                    "b20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG\n" +
+                    "9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsB\n" +
+                    "CSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97\n" +
+                    "nh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt\n" +
+                    "43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7P\n" +
+                    "T19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4\n" +
+                    "gdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAO\n" +
+                    "BgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbR\n" +
+                    "TLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUw\n" +
+                    "DQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/Esr\n" +
+                    "hMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg\n" +
+                    "06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJF\n" +
+                    "PnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0ls\n" +
+                    "YSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQk\n" +
+                    "CAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=\n" +
+                    "-----END CERTIFICATE-----");
+
+            X509Certificate dismartRsaCertificationAuthority = Certificates.decodeCertificatePem("" +
                     "-----BEGIN CERTIFICATE-----\n" +
                     "MIIFsTCCBJmgAwIBAgIQAyOnDWIibB9Hsi3TaiQpmzANBgkqhkiG9w0BAQsFADBe\n" +
                     "MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3\n" +
@@ -143,11 +197,10 @@ public class ApiClient {
                     "462PoIOtu4EZ0AwIlQAevN4aafgcEbm06kVmQ+y+bahMgEjrLBXQ21M3B6/hKvW3\n" +
                     "yLckNY5q52z+Gc3tQSX4/YVL7XX5\n" +
                     "-----END CERTIFICATE-----");
-
             HandshakeCertificates certificates = new HandshakeCertificates.Builder()
-                  //  .addTrustedCertificate(letsEncryptCertificateAuthority)
-                  //  .addTrustedCertificate(entrustRootCertificateAuthority)
                     .addTrustedCertificate(dismartRsaCertificationAuthority)
+                    .addTrustedCertificate(digicertRsaCertificationAuthority)
+                    .addTrustedCertificate(rapidRsaCertificationAuthority)
                     // Uncomment if standard certificates are also required.
                     //.addPlatformTrustedCertificates()
                     .build();
@@ -155,7 +208,7 @@ public class ApiClient {
                     .addNetworkInterceptor(interceptor)
                     .sslSocketFactory(certificates.sslSocketFactory(), certificates.trustManager())
                     .build();
-            Log.wtf("SSL","SSL Q");
+            Log.wtf("SSL", "SSL Q");
 
             /*X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
@@ -183,7 +236,7 @@ public class ApiClient {
                 e.printStackTrace();
             }*/
 
-        } else if ( (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)) {
+        } else if ((Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P)) {
             X509TrustManager trustManager;
             SSLSocketFactory sslSocketFactory;
             try {
@@ -205,7 +258,7 @@ public class ApiClient {
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
                         .build();
-                Log.wtf("SSL","SSL Marsh -- > Pie");
+                Log.wtf("SSL", "SSL Marsh -- > Pie");
             } catch (GeneralSecurityException e) {
                 e.printStackTrace();
             }
@@ -224,7 +277,7 @@ public class ApiClient {
                         .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
                         .build();
-                Log.wtf("SSL","SSL <---Loli");
+                Log.wtf("SSL", "SSL <---Loli");
             } catch (GeneralSecurityException e) {
                 throw new RuntimeException(e);
             }
@@ -332,8 +385,8 @@ public class ApiClient {
      * <p>This can be used to replace the host platform's built-in trusted certificates with a custom
      * set. This is useful in development where certificate authority-trusted certificates aren't
      * available. Or in production, to avoid reliance on third-party certificate authorities.
-     *
-
+     * <p>
+     * <p>
      * the host platform's built-in trust store.
      *
      * <h3>Warning: Customizing Trusted Certificates is Dangerous!</h3>
