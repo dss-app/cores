@@ -209,7 +209,9 @@ public class ApiClient {
                             // }
                             return response;
                         }
-                    }).build();
+                    })
+                    .addNetworkInterceptor(interceptor)
+                    .build();
             ;
 
             Log.wtf("SSL", "SSL Q");
@@ -259,8 +261,8 @@ public class ApiClient {
                 });*/
 
                 client = httpClient
-                        .addNetworkInterceptor(interceptor)
                         .sslSocketFactory(sslSocketFactory, trustManager)
+                        .addNetworkInterceptor(interceptor)
                         .build();
                 Log.wtf("SSL", "SSL Marsh -- > Pie");
             } catch (GeneralSecurityException e) {
